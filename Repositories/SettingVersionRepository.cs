@@ -1,5 +1,6 @@
 ﻿using Aestus.API.Data;
 using Aestus.API.Interfaces;
+using Aestus.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Aestus.API.Repositories
@@ -17,6 +18,20 @@ namespace Aestus.API.Repositories
             return await context.SettingVersions
                 .Include(q => q.Setting)
                 .ToListAsync();
+        }
+
+        public async Task<SettingVersion?> GetSettingVersionByParamsAsync(SettingVersionRequest request)
+        {
+            var reqDateTime = request.StartDate ?? DateTime.Now;
+
+            var response = await context.SettingVersions
+                                .Where(sv => sv.Setting.SettingName == request.SettingName
+                                             && sv.StartDate <= reqDateTime
+                                             && (sv.EndDate == null || sv.EndDate > reqDateTime))
+                                .Include(sv => sv.Setting)
+                                .OrderByDescending(sv => sv.StartDate)
+                                .FirstOrDefaultAsync();
+            return response;
         }
 
         public async Task<SettingVersion?> GetSettingVersionBySettingVersionIdAsync(int id)

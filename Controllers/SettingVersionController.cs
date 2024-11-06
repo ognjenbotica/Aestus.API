@@ -75,6 +75,26 @@ namespace Aestus.API.Controllers
             }
         }
 
+        [HttpPost("byParams")]
+        public async Task<ActionResult<SettingDto>> GetSettingVersionByParams(SettingVersionRequest request)
+        {
+            try
+            {
+                var settingVersion = await settingVersionRepository.GetSettingVersionByParamsAsync(request);
+                if (settingVersion == null)
+                {
+                    return NotFound();
+                }
+                var settingVersionDto = mapper.Map<SettingVersionDto>(settingVersion);
+                return Ok(settingVersionDto);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong in the {nameof(GetSettingVersionByParams)} action: {ex}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         [HttpPut]
         public async Task<ActionResult> UpdateSettingVersion(SettingVersionDto settingVersionDto)
         {

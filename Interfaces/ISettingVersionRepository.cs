@@ -1,4 +1,5 @@
 ﻿using Aestus.API.Data;
+using Aestus.API.Models;
 
 namespace Aestus.API.Interfaces
 {
@@ -9,5 +10,6 @@ namespace Aestus.API.Interfaces
         Task<SettingVersion?> CreateSettingVersionAsync(SettingVersion settingVersion);
         Task UpdateSettingVersionAsync(SettingVersion settingVersion);
         Task DeleteSettingVersionAsync(SettingVersion settingVersion);
+        Task<SettingVersion?> GetSettingVersionByParamsAsync(SettingVersionRequest request);
     }
 }
