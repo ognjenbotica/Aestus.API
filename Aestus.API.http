@@ -1,0 +1,6 @@
+@Aestus.API_HostAddress = http://localhost:5075
+
+GET {{Aestus.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
